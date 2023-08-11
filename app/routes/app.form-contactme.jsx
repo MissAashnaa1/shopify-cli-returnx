@@ -1,38 +1,27 @@
 import {
   Box,
   Card,
-  Layout,
-  Link,
-  List,
   Page,
-  Text,
-  VerticalStack,
+  Form,
+  FormLayout,
+  TextField,
+  Button,
 } from "@shopify/polaris";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AdditionalPage() {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("submit");
-    console.log(event.target.name.value);
-    console.log(event.target.message.value);
-    const name = event.target.name.value;
-    const message = event.target.message.value;
+  const handleSubmit = () => {
     if (name.trim() === "" || message.trim() === "") {
       toast.error("Please fill in all fields");
       return;
     }
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Submitted!");
-    }, 3000);
 
     axios
       .post(`http://localhost:5000/contact-me`, {
@@ -40,39 +29,56 @@ export default function AdditionalPage() {
         message,
       })
       .then((res) => {
-        // console.log(res);
-        console.log(res.data);
+        setIsLoading(false);
+        toast.success("Submitted!");
       })
       .catch((err) => {
-        console.log(err);
+        setIsLoading(false);
+        toast.error("Something went wrong!");
       });
+    setName("");
+    setMessage("");
   };
+
+  const handleNameChange = useCallback((value) => setName(value), []);
+  const handleMessageChange = useCallback((value) => setMessage(value), []);
   return (
-    <Box>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <br />
-        <input type="text" id="name" name="name" />
-        <br />
-        <label htmlFor="message">Message</label>
-        <br />
-        <textarea id="message" name="message" />
-        <br />
-        <br />
-        <input
-          type="submit"
-          value={isLoading ? "Please Wait" : "Submit"}
-          disabled={isLoading}
+    <Page>
+      <Card>
+        <Form onSubmit={handleSubmit}>
+          <FormLayout>
+            <TextField
+              value={name}
+              onChange={handleNameChange}
+              label="Name"
+              type="text"
+              autoComplete="off"
+              helpText={<span>Enter your Name here.</span>}
+            />
+            <TextField
+              value={message}
+              onChange={handleMessageChange}
+              label="Message"
+              type="text"
+              autoComplete="off"
+              helpText={<span>Enter your Message here.</span>}
+            />
+
+            <Button loading={isLoading} submit>
+              Submit
+            </Button>
+          </FormLayout>
+        </Form>
+
+        {isLoading && <p>Submitting...</p>}
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 3000,
+          }}
         />
-      </form>
-      {isLoading && <p>Submitting...</p>}
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          duration: 3000,
-        }}
-      />
-    </Box>
+      </Card>
+    </Page>
   );
 }
 

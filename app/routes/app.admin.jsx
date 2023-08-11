@@ -1,38 +1,42 @@
 import {
-  Box,
   Card,
   Layout,
-  Link,
-  List,
   Page,
-  Text,
-  VerticalStack,
   Button,
+  LegacyCard,
+  DataTable,
 } from "@shopify/polaris";
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function AdditionalPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [rows, setRows] = useState([[]]);
+  useLayoutEffect(() => {
+    getData();
+  }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const getData = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Submitted!");
-    }, 3000);
 
     axios
       .get(`http://localhost:5000/get-formdata`)
       .then((res) => {
-        console.log(res.data);
+        if (res.data.success) {
+          const data = [
+            ...res.data.data.map((item) => {
+              return [item.name, item.message];
+            }),
+          ];
+          setRows(data.reverse());
+        }
+        setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        setIsLoading(false);
+        toast.error("Something went wrong!");
       });
   };
   return (
@@ -41,17 +45,18 @@ export default function AdditionalPage() {
       <Layout>
         <Layout.Section>
           <Card>
-            <Text as="h2" variant="bodyMd">
-              Name here
-            </Text>
-            <Text as="h2" variant="bodyMd">
-              Name here
-            </Text>
+            <LegacyCard>
+              <DataTable
+                columnContentTypes={["text", "text"]}
+                headings={["Name", "Messase"]}
+                rows={rows}
+              />
+            </LegacyCard>
           </Card>
         </Layout.Section>
         <Layout.Section secondary>
           <Card>
-            <Button loading={isLoading} onClick={handleSubmit}>
+            <Button loading={isLoading} onClick={getData}>
               Refresh
             </Button>
           </Card>
@@ -64,22 +69,5 @@ export default function AdditionalPage() {
         }}
       />
     </Page>
-  );
-}
-
-function Code({ children }) {
-  return (
-    <Box
-      as="span"
-      padding="025"
-      paddingInlineStart="1"
-      paddingInlineEnd="1"
-      background="bg-subdued"
-      borderWidth="1"
-      borderColor="border"
-      borderRadius="1"
-    >
-      <code>{children}</code>
-    </Box>
   );
 }
