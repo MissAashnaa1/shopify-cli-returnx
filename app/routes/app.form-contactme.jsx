@@ -11,6 +11,7 @@ import { useState, useCallback } from "react";
 
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import BASE_URL from "./constant";
 
 export default function AdditionalPage() {
   const [name, setName] = useState("");
@@ -24,20 +25,22 @@ export default function AdditionalPage() {
     }
 
     axios
-      .post(`http://localhost:5000/contact-me`, {
+      .post(`${BASE_URL}/contact-me`, {
         name,
         message,
       })
       .then((res) => {
         setIsLoading(false);
         toast.success("Submitted!");
+        setName("");
+        setMessage("");
       })
       .catch((err) => {
         setIsLoading(false);
         toast.error("Something went wrong!");
+        setName("");
+        setMessage("");
       });
-    setName("");
-    setMessage("");
   };
 
   const handleNameChange = useCallback((value) => setName(value), []);

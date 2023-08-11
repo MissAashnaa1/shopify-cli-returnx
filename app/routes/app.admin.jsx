@@ -10,6 +10,7 @@ import { useState, useLayoutEffect } from "react";
 
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import BASE_URL from "./constant";
 
 export default function AdditionalPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function AdditionalPage() {
     setIsLoading(true);
 
     axios
-      .get(`http://localhost:5000/get-formdata`)
+      .get(`${BASE_URL}/get-formdata`)
       .then((res) => {
         if (res.data.success) {
           const data = [
