@@ -23,6 +23,7 @@ export default function AdditionalPage() {
       toast.error("Please fill in all fields");
       return;
     }
+    setIsLoading(true);
 
     axios
       .post(`${BASE_URL}/contact-me`, {
@@ -34,12 +35,14 @@ export default function AdditionalPage() {
         toast.success("Submitted!");
         setName("");
         setMessage("");
+        setIsLoading(false);
       })
       .catch((err) => {
         setIsLoading(false);
         toast.error("Something went wrong!");
         setName("");
         setMessage("");
+        setIsLoading(false);
       });
   };
 
@@ -82,22 +85,5 @@ export default function AdditionalPage() {
         />
       </Card>
     </Page>
-  );
-}
-
-function Code({ children }) {
-  return (
-    <Box
-      as="span"
-      padding="025"
-      paddingInlineStart="1"
-      paddingInlineEnd="1"
-      background="bg-subdued"
-      borderWidth="1"
-      borderColor="border"
-      borderRadius="1"
-    >
-      <code>{children}</code>
-    </Box>
   );
 }

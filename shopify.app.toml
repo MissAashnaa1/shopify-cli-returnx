@@ -2,7 +2,7 @@
 
 name = "return-app"
 client_id = "396e2eb8e98ff4462b54764027a86469"
-application_url = "https://switzerland-toolbar-hh-assuming.trycloudflare.com"
+application_url = "https://william-golf-steve-business.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://switzerland-toolbar-hh-assuming.trycloudflare.com/auth/callback",
-  "https://switzerland-toolbar-hh-assuming.trycloudflare.com/auth/shopify/callback",
-  "https://switzerland-toolbar-hh-assuming.trycloudflare.com/api/auth/callback"
+  "https://william-golf-steve-business.trycloudflare.com/auth/callback",
+  "https://william-golf-steve-business.trycloudflare.com/auth/shopify/callback",
+  "https://william-golf-steve-business.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
