@@ -49,6 +49,7 @@ export default function AdditionalPage() {
         toast.error("Something went wrong!");
       });
   };
+
   return (
     <Page>
       <ui-title-bar title="Admin Page" />

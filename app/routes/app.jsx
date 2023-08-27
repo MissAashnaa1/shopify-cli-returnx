@@ -33,7 +33,9 @@ export default function App() {
         </Link>
         <Link to="/app/additional">Additional page</Link>
         <Link to="/app/form-contactme">Contact Me Form</Link>
-        <Link to="/app/admin">Admin</Link>
+        <Link to="/app/admin">Admin- Message For Owner</Link>
+        <Link to="/app/buy-products">Buy Products</Link>
+        <Link to="/app/verify-order">Verify Order</Link>
       </ui-nav-menu>
       <PolarisAppProvider
         i18n={polarisTranslations}
